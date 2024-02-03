@@ -1,10 +1,7 @@
 package medvoll.api.controller;
 
 import jakarta.validation.Valid;
-import medvoll.api.medico.DadosCadastroMedicos;
-import medvoll.api.medico.DadosListagemMedico;
-import medvoll.api.medico.Medico;
-import medvoll.api.medico.MedicoRepository;
+import medvoll.api.medico.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +30,10 @@ public class MedicoController {
     }
 
     @PutMapping
-    public void atualizar() {
-
+    @Transactional
+    public void atualizar(@RequestBody @Valid DadosAtualizarMedicos dados) {
+        var medico = repository.getReferenceById(dados.id());
+        medico.atualizarInformacoes(dados);
     }
 
 }
