@@ -1,10 +1,7 @@
 package medvoll.api.controller;
 
 import jakarta.validation.Valid;
-import medvoll.api.paciente.DadosCadastroPacientes;
-import medvoll.api.paciente.DadosListagemPaciente;
-import medvoll.api.paciente.Paciente;
-import medvoll.api.paciente.PacienteRepository;
+import medvoll.api.paciente.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,5 +25,12 @@ public class PacienteController {
     @GetMapping
     public Page<DadosListagemPaciente> listar(@PageableDefault(size = 10, sort = { "nome" })Pageable paginacao) {
         return repository.findAll(paginacao).map(DadosListagemPaciente::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizar(@RequestBody @Valid DadosAtualizarPacientes dados) {
+        var paciente = repository.getReferenceById(dados.id());
+        paciente.atualizarInformacoes(dados);
     }
 }
