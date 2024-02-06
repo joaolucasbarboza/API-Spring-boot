@@ -1,6 +1,6 @@
-package medvoll.api.medico;
+package medvoll.api.domain.medico;
 
-import medvoll.api.endereco.Endereco;
+import medvoll.api.domain.endereco.Endereco;
 
 public record DadosDatalhamentoMedico(
         Long id,

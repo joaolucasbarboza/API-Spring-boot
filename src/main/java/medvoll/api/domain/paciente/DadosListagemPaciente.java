@@ -1,7 +1,6 @@
-package medvoll.api.paciente;
+package medvoll.api.domain.paciente;
 
-import medvoll.api.endereco.DadosEndereco;
-import medvoll.api.endereco.Endereco;
+import medvoll.api.domain.endereco.Endereco;
 
 public record DadosListagemPaciente(
         Long id,

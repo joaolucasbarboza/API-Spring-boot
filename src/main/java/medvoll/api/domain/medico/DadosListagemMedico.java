@@ -1,4 +1,4 @@
-package medvoll.api.medico;
+package medvoll.api.domain.medico;
 
 public record DadosListagemMedico(Long id, String nome, String email, String crm, Especialidade especialidade) {
 
