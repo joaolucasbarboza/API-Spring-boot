@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import medvoll.api.domain.endereco.Endereco;
 
-@Table(name = "pacientes")
+@Table(name = "pacientes", schema = "vollmed_api")
 @Entity(name = "Paciente")
 @Getter
 @EqualsAndHashCode(of = "id")

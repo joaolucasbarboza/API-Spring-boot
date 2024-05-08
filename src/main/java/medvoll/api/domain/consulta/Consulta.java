@@ -1,10 +1,7 @@
 package medvoll.api.domain.consulta;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import medvoll.api.domain.medico.Medico;
 import medvoll.api.domain.paciente.Paciente;
 
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "consultas")
 @Entity(name = "consulta")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -36,10 +34,11 @@ public class Consulta {
     @Enumerated(EnumType.STRING)
     private MotivoCancelamento motivoCancelamento;
 
-    public Consulta(Long id, Medico medico, Paciente paciente, LocalDateTime data, MotivoCancelamento motivo) {
+    public Consulta(Long id, Long id1, LocalDateTime data, Object o) {
     }
 
+
     public void cancelar(MotivoCancelamento motivo) {
-        this.motivoCancelamento =motivo;
+        this.motivoCancelamento = motivo;
     }
 }

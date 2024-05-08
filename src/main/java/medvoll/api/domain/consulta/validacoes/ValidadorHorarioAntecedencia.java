@@ -1,11 +1,13 @@
 package medvoll.api.domain.consulta.validacoes;
 
 import medvoll.api.domain.consulta.DadosAgendamento;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class ValidadorHorarioAntecedencia {
+@Component
+public class ValidadorHorarioAntecedencia implements ValidadorAgendamentoConsulta {
 
     public void validar(DadosAgendamento dados) {
         var dataConsulta = dados.data();

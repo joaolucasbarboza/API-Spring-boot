@@ -5,15 +5,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     Page<Paciente> findAllByStatusTrue(Pageable paginacao);
 
-    @Query("""
-            select m.ativo
-            from Paciente m
+    @Query(value = """
+            select m.status
+            from Pacientes m
             where
-            m.id = :id
-            """)
+            m.id = :idPaciente
+            """, nativeQuery = true)
 
     Boolean findStatusById(Long idPaciente);
+
+    Optional<Paciente> findByIdAndStatus(Long idPaciente, boolean b);
 }

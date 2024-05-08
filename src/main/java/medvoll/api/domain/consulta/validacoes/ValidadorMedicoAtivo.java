@@ -2,12 +2,16 @@ package medvoll.api.domain.consulta.validacoes;
 
 import medvoll.api.domain.consulta.DadosAgendamento;
 import medvoll.api.domain.medico.MedicoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class ValidadorMedicoAtivo {
+@Component
+public class ValidadorMedicoAtivo implements ValidadorAgendamentoConsulta {
 
+    @Autowired
     private MedicoRepository repository;
 
-    public void validar(DadosAgendamento dados) {
+    public void validar(DadosAgendamento dados)  {
 
         if (dados.idMedico() == null) {
             return;

@@ -1,5 +1,6 @@
 package medvoll.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import medvoll.api.domain.consulta.AgendarConsultas;
 import medvoll.api.domain.consulta.DadosAgendamento;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("consultas")
+@SecurityRequirement(name = "bearer-key")
 public class ConsultaController {
 
     @Autowired
@@ -28,8 +30,9 @@ public class ConsultaController {
     @PostMapping
     @Transactional
     public ResponseEntity agendar(@RequestBody @Valid DadosAgendamento dados) {
-        agenda.agendar(dados);
-        return ResponseEntity.ok(new DadosDetalhamentoConsulta(null, null, null, null));
+        var dto = agenda.agendar(dados);
+        System.out.println(dados);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping

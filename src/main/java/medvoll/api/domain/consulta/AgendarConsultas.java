@@ -1,10 +1,15 @@
 package medvoll.api.domain.consulta;
 
+import medvoll.api.domain.consulta.validacoes.ValidadorAgendamentoConsulta;
 import medvoll.api.domain.medico.Medico;
 import medvoll.api.domain.medico.MedicoRepository;
+import medvoll.api.domain.paciente.Paciente;
 import medvoll.api.domain.paciente.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class AgendarConsultas {
@@ -18,25 +23,45 @@ public class AgendarConsultas {
     @Autowired
     private PacienteRepository pacienteRepository;
 
-    public void agendar(DadosAgendamento dados) {
+    @Autowired
+    private List<ValidadorAgendamentoConsulta> validadores;
+
+    public DadosDetalhamentoConsulta agendar(DadosAgendamento dados) {
         if (!pacienteRepository.existsById(dados.idPaciente())) {
             throw new RuntimeException("Paciente não encontrado!");
         }
+
+        System.out.println("passei aqui no if de paciente nao encontrado");
         
         if (medicoRepository != null && !medicoRepository.existsById(dados.idMedico())) {
             throw new RuntimeException("Medico não encontrado");
         }
-        
-        var medico = medicoAleatorio(dados);
+
+        validadores.forEach(v -> v.validar(dados));
+
         var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
-        var consulta = new Consulta(null, medico, paciente, dados.data(), null);
+
+        System.out.println(paciente);
+
+        var medico = medicoAleatorio(dados);
+        System.out.println(medico);
+
+        Consulta consulta = new Consulta();
+        consulta.setMedico(medico);
+        consulta.setPaciente(paciente);
+        consulta.setData(dados.data());
+        consulta.setMotivoCancelamento(MotivoCancelamento.PACIENTE_DESISTIU);
+
+        System.out.println(consulta);
 
         consultaRepository.save(consulta);
+
+        return new DadosDetalhamentoConsulta(consulta);
     }
 
     private Medico medicoAleatorio(DadosAgendamento dados) {
         if (dados.idMedico() != null) {
-            return medicoRepository.getReferenceById(dados.idMedico());
+            return medicoRepository.findById(dados.idMedico()).orElseThrow();
         }
 
         if (dados.especialidade() == null) {

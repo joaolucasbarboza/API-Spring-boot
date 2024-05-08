@@ -1,10 +1,12 @@
 package medvoll.api.domain.consulta.validacoes;
 
 import medvoll.api.domain.consulta.DadosAgendamento;
+import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
 
-public class ValidadorHorarioFuncionamentoClinica {
+@Component
+public class ValidadorHorarioFuncionamentoClinica implements ValidadorAgendamentoConsulta {
 
     public void validar(DadosAgendamento dados) {
         var dataConsulta = dados.data();
