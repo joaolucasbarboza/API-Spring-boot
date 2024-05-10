@@ -25,7 +25,6 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             order by rand()
             limit 1
             """)
-
     Medico medicoAleatoriodb(Especialidade especialidade, LocalDateTime data);
 
     @Query("""
@@ -34,6 +33,5 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             where
             m.id = :idMedico
             """)
-
     Boolean findStatusById(Long idMedico);
 }
