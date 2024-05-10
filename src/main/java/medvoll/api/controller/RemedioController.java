@@ -2,17 +2,14 @@ package medvoll.api.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import medvoll.api.domain.remedio.DadosCadastroRemedio;
-import medvoll.api.domain.remedio.DadosDetalhamentoRemedio;
-import medvoll.api.domain.remedio.RemedioEntity;
-import medvoll.api.domain.remedio.RemedioRepository;
+import medvoll.api.domain.remedio.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -32,5 +29,13 @@ public class RemedioController {
         var uri = uriBuilder.path("/remedios/{id}").buildAndExpand(remedio.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DadosDetalhamentoRemedio(remedio));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<DadosListagemRemedios>> listar(@PageableDefault()Pageable paginacao) {
+
+      var page = repository.findAll(paginacao).map(DadosListagemRemedios::new);
+
+      return ResponseEntity.ok(page);
     }
 }
