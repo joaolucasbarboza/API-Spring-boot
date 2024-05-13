@@ -1,4 +1,4 @@
-package medvoll.api.domain.medico;
+package medvoll.api.domain.remedio;
 
 public enum Dosagem {
     MILILITROS,

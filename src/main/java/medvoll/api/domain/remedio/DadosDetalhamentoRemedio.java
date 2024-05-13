@@ -1,7 +1,5 @@
 package medvoll.api.domain.remedio;
 
-import medvoll.api.domain.medico.Dosagem;
-
 public record DadosDetalhamentoRemedio(
         Long id,
         String descricao,

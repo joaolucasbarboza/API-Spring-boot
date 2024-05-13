@@ -32,7 +32,7 @@ public class RemedioController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemRemedios>> listar(@PageableDefault()Pageable paginacao) {
+    public ResponseEntity<Page<DadosListagemRemedios>> listar(@PageableDefault() Pageable paginacao) {
 
       var page = repository.findAll(paginacao).map(DadosListagemRemedios::new);
 

@@ -1,8 +1,6 @@
 package medvoll.api.domain.remedio;
 
 
-import medvoll.api.domain.medico.Dosagem;
-
 public record DadosListagemRemedios(Long id, String descricao, String resumoMedico, String numeroRegistro, Long estoque, Dosagem dosagem, TipoRemedio tipoRemedio) {
 
     public DadosListagemRemedios(RemedioEntity remedio) {
