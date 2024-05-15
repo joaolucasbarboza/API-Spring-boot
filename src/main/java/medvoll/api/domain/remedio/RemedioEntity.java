@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import medvoll.api.domain.consulta.Consulta;
+import medvoll.api.domain.consulta.ConsultaEntity;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class RemedioEntity {
 
     @JsonBackReference
     @ManyToMany(mappedBy = "remedios")
-    private List<Consulta> consultas;
+    private List<ConsultaEntity> consultas;
 
 
     public RemedioEntity(DadosCadastroRemedio dados) {

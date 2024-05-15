@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import medvoll.api.domain.medico.Medico;
 import medvoll.api.domain.paciente.Paciente;
-import medvoll.api.domain.remedio.DadosListagemRemedios;
 import medvoll.api.domain.remedio.RemedioEntity;
 import org.hibernate.annotations.Cascade;
 
@@ -20,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Consulta {
+public class ConsultaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +50,10 @@ public class Consulta {
             inverseJoinColumns = @JoinColumn(name = "REMEDIOS_ID"))
     private List<RemedioEntity> remedios = new ArrayList<>();
 
-    public Consulta(Long id, Long id1, LocalDateTime data, Object o) {
+    @Column(name = "valor")
+    private Float valor;
+
+    public ConsultaEntity(Long id, Long id1, LocalDateTime data, Object o) {
     }
 
 
