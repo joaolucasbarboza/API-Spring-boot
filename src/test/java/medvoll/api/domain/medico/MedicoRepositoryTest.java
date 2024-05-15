@@ -1,6 +1,6 @@
 package medvoll.api.domain.medico;
 
-import medvoll.api.domain.consulta.Consulta;
+import medvoll.api.domain.consulta.ConsultaEntity;
 import medvoll.api.domain.consulta.MotivoCancelamento;
 import medvoll.api.domain.endereco.DadosEndereco;
 import medvoll.api.domain.paciente.DadosCadastroPacientes;
@@ -45,7 +45,7 @@ class MedicoRepositoryTest {
     }
 
     private void cadastrarConsulta(Medico medico, Paciente paciente, LocalDateTime data) {
-        Consulta consulta = new Consulta();
+        ConsultaEntity consulta = new ConsultaEntity();
 
         consulta.setMedico(medico);
         consulta.setPaciente(paciente);
