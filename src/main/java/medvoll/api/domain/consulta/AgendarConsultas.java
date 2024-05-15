@@ -3,12 +3,10 @@ package medvoll.api.domain.consulta;
 import medvoll.api.domain.consulta.validacoes.ValidadorAgendamentoConsulta;
 import medvoll.api.domain.medico.Medico;
 import medvoll.api.domain.medico.MedicoRepository;
-import medvoll.api.domain.paciente.Paciente;
 import medvoll.api.domain.paciente.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -46,7 +44,7 @@ public class AgendarConsultas {
         var medico = medicoAleatorio(dados);
         System.out.println(medico);
 
-        Consulta consulta = new Consulta();
+        ConsultaEntity consulta = new ConsultaEntity();
         consulta.setMedico(medico);
         consulta.setPaciente(paciente);
         consulta.setData(dados.data());
