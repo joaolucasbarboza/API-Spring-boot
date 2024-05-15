@@ -1,4 +1,4 @@
-package medvoll.api.domain.remedio;
+package medvoll.api.domain.consulta;
 
 public enum FormaPagamento {
     PIX,
