@@ -44,18 +44,21 @@ public class MedicoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemMedico>> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
+    public ResponseEntity<Page<DadosListagemMedico>> listar(@PageableDefault() Pageable paginacao) {
 
         var page = repository.findAllByStatusTrue(paginacao).map(DadosListagemMedico::new);
 
         return ResponseEntity.ok(page);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizarMedicos dados) {
-        var medico = repository.getReferenceById(dados.id());
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizarMedicos dados, @PathVariable Long id) {
+        var medico = repository.getReferenceById(id);
+
         medico.atualizarInformacoes(dados);
+
+        repository.save(medico);
 
         return ResponseEntity.ok(new DadosDatalhamentoMedico(medico));
     }

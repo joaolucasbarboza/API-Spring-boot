@@ -3,7 +3,12 @@ package medvoll.api.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import medvoll.api.domain.recepcionista.*;
+import medvoll.api.domain.recepcionista.DadosAtualizarRecepcionista;
+import medvoll.api.domain.recepcionista.DadosCadastroRecepcionista;
+import medvoll.api.domain.recepcionista.DadosDetalhamentoRecepcionista;
+import medvoll.api.domain.recepcionista.DadosListagemRecepcionista;
+import medvoll.api.domain.recepcionista.RecepcionistaEntity;
+import medvoll.api.domain.recepcionista.RecepcionistaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +45,7 @@ public class RecepcionistaController {
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizarRecepcionista dados, @PathVariable Long id) {
         var recepcionista = repository.getReferenceById(id);
 
@@ -49,4 +55,6 @@ public class RecepcionistaController {
 
         return ResponseEntity.ok(new DadosDetalhamentoRecepcionista(recepcionista));
     }
+
+
 }
