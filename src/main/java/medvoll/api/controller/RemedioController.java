@@ -38,4 +38,11 @@ public class RemedioController {
 
       return ResponseEntity.ok(page);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id) {
+        var remedio = repository.getById(id);
+
+        return ResponseEntity.ok(new DadosDetalhamentoRemedio(remedio));
+    }
 }
