@@ -3,17 +3,14 @@ package medvoll.api.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import medvoll.api.domain.recepcionista.DadosCadastroRecepcionista;
-import medvoll.api.domain.recepcionista.DadosDetalhamentoRecepcionista;
-import medvoll.api.domain.recepcionista.RecepcionistaEntity;
-import medvoll.api.domain.recepcionista.RecepcionistaRepository;
+import medvoll.api.domain.recepcionista.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -33,5 +30,23 @@ public class RecepcionistaController {
     var uri = uriBuilder.path("/recepcionistas/{id}").buildAndExpand(recepcionista.getId()).toUri();
 
     return ResponseEntity.created(uri).body(new DadosDetalhamentoRecepcionista(recepcionista));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<DadosListagemRecepcionista>> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable pageable) {
+        var page = repository.findAllByStatusTrue(pageable).map(DadosListagemRecepcionista::new);
+
+        return ResponseEntity.ok(page);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizarRecepcionista dados, @PathVariable Long id) {
+        var recepcionista = repository.getReferenceById(id);
+
+        recepcionista.atualizarInformacoes(dados);
+
+        repository.save(recepcionista);
+
+        return ResponseEntity.ok(new DadosDetalhamentoRecepcionista(recepcionista));
     }
 }
