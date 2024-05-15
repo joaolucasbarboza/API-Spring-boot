@@ -6,7 +6,9 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import medvoll.api.domain.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -47,7 +49,7 @@ public class TokenService {
                     .getSubject();
 
         } catch (JWTVerificationException exception){
-            throw new RuntimeException("Token JWT inválido ou expirado.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token JWT inválido ou não fornecido", exception);
         }
     }
 
