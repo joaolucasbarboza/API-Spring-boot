@@ -21,8 +21,8 @@ public record DadosCadastroRemedio(
         @NotNull
         Long estoque,
 
-        @JsonProperty("forma_pagamento")
-        FormaPagamento formaPagamento,
+//        @JsonProperty("forma_pagamento")
+//        FormaPagamento formaPagamento,
 
         @NotNull
         Dosagem dosagem,

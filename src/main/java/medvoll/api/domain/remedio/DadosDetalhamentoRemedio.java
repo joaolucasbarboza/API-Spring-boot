@@ -12,12 +12,12 @@ public record DadosDetalhamentoRemedio(
 
         public DadosDetalhamentoRemedio(RemedioEntity remedio) {
             this(remedio.getId(),
-                    remedio.getDescricao(),
-                    remedio.getResumoMedicamento(),
-                    remedio.getNumeroRegistro(),
-                    remedio.getEstoque(),
-                    remedio.getDosagem(),
-                    remedio.getTipoRemedio()
+                remedio.getDescricao(),
+                remedio.getResumoMedicamento(),
+                remedio.getNumeroRegistro(),
+                remedio.getEstoque(),
+                remedio.getDosagem(),
+                remedio.getTipoRemedio()
             );
         }
 }
