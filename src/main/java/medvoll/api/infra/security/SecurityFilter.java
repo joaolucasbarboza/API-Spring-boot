@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import medvoll.api.domain.paciente.PacienteRepository;
 import medvoll.api.domain.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +21,7 @@ public class SecurityFilter extends OncePerRequestFilter  {
     private TokenService tokenService;
 
     @Autowired
-    private UsuarioRepository repository;
+    private PacienteRepository repository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -28,9 +29,9 @@ public class SecurityFilter extends OncePerRequestFilter  {
 
         if (tokenJWT != null) {
             var subject = tokenService.getSubject(tokenJWT);
-            var usuario = repository.findByLogin(subject);
+            var paciente = repository.findByLogin(subject);
 
-            var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+            var authentication = new UsernamePasswordAuthenticationToken(paciente, paciente.getPassword(), paciente.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

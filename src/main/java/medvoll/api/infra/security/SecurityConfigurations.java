@@ -25,10 +25,11 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return
-                http.csrf(csrf -> csrf.disable())
+                http.csrf(AbstractHttpConfigurer::disable)
                         .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .authorizeHttpRequests(req -> {
                             req.requestMatchers(HttpMethod.POST,"/login").permitAll();
+                            req.requestMatchers(HttpMethod.POST,"/pacientes").permitAll();
                             req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
                             req.requestMatchers(HttpMethod.DELETE, "/medicos").hasRole("ADMIN");
                             req.requestMatchers(HttpMethod.DELETE, "/pacientes").hasRole("ADMIN");
