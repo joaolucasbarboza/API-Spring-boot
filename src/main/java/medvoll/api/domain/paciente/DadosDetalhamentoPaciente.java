@@ -5,13 +5,13 @@ import medvoll.api.domain.endereco.Endereco;
 public record DadosDetalhamentoPaciente(
         Long id,
         String nome,
-        String login,
-        String senha,
+        String email,
         String telefone,
-        String cpf
-        ) {
+        String cpf,
+        Endereco endereco) {
 
     public DadosDetalhamentoPaciente(Paciente paciente) {
-        this(paciente.getId(), paciente.getNome(), paciente.getLogin(), paciente.getSenha(), paciente.getTelefone(), paciente.getCpf());
+        this(paciente.getId(), paciente.getNome(), paciente.getEmail(), paciente.getTelefone(), paciente.getCpf(),
+                paciente.getEndereco());
     }
 }

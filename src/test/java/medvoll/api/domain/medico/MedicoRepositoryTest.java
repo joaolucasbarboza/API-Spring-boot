@@ -37,7 +37,7 @@ class MedicoRepositoryTest {
         var proximaSegundaAs10 = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(10, 0);
 
         var medico = cadastrarMedico("Medico", "medico@vell.med", "123456", Especialidade.CARDIOLOGIA);
-        var paciente = cadastrarPaciente("João", "joao@gmail.com", "25341859287", "018997834700", "41340766841");
+        var paciente = cadastrarPaciente("João", "joao@gmail.com", "25341859287");
         cadastrarConsulta(medico, paciente, proximaSegundaAs10);
 
         var medicoLivre = medicoRepository.medicoAleatoriodb(Especialidade.CARDIOLOGIA, proximaSegundaAs10);
@@ -62,8 +62,8 @@ class MedicoRepositoryTest {
         return medico;
     }
 
-    private Paciente cadastrarPaciente(String nome, String login, String senha, String telefone, String cpf) {
-        var paciente = new Paciente(dadosPaciente(nome, login, senha, telefone, cpf));
+    private Paciente cadastrarPaciente(String nome, String email, String cpf) {
+        var paciente = new Paciente(dadosPaciente(nome, email, cpf));
         em.persist(paciente);
         return paciente;
     }
@@ -79,13 +79,13 @@ class MedicoRepositoryTest {
         );
     }
 
-    private DadosCadastroPacientes dadosPaciente(String nome, String login, String senha, String telefone,String cpf) {
+    private DadosCadastroPacientes dadosPaciente(String nome, String email, String cpf) {
         return new DadosCadastroPacientes(
                 nome,
-                login,
-                senha,
-                telefone,
-                cpf
+                email,
+                "61999999999",
+                cpf,
+                dadosEndereco()
         );
     }
 
