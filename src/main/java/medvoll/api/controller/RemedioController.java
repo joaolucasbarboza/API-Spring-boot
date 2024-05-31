@@ -45,17 +45,4 @@ public class RemedioController {
 
         return ResponseEntity.ok(new DadosDetalhamentoRemedio(remedio));
     }
-
-    @PutMapping("/{id}")
-    @Transactional
-    public ResponseEntity atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizarRemedio dados) {
-        var remedio = repository.getById(id);
-
-        remedio.atualizarInformacoes(dados);
-
-        repository.save(remedio);
-
-        return ResponseEntity.ok(new DadosDetalhamentoRemedio(remedio));
-    }
-
 }

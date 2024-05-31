@@ -54,25 +54,4 @@ public class RemedioEntity {
         this.dosagem = dados.dosagem();
         this.tipoRemedio = dados.tipoRemedio();
     }
-
-    public void atualizarInformacoes(DadosAtualizarRemedio dados) {
-        if (dados.descricao() != null) {
-            this.descricao = dados.descricao();
-        }
-        if (dados.resumoMedicamento() != null) {
-            this.resumoMedicamento = dados.resumoMedicamento();
-        }
-        if (dados.numeroRegistro() != null) {
-            this.numeroRegistro = dados.numeroRegistro();
-        }
-        if (dados.estoque() != null) {
-            this.estoque = dados.estoque();
-        }
-        if (dados.dosagem() != null) {
-            this.dosagem = dados.dosagem();
-        }
-        if (dados.tipoRemedio() != null) {
-            this.tipoRemedio = dados.tipoRemedio();
-        }
-    }
 }
