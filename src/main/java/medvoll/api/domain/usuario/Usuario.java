@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import medvoll.api.domain.endereco.Endereco;
+import medvoll.api.domain.paciente.DadosCadastroPacientes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +25,11 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String nome;
     private String login;
     private String senha;
+    private Boolean status;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -59,5 +64,12 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Usuario(String nome, String login, String senha) {
+        this.nome = nome;
+        this.login = login;
+        this.senha = senha;
+        this.status = true;
     }
 }
