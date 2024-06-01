@@ -5,6 +5,8 @@ import medvoll.api.domain.consulta.MotivoCancelamento;
 import medvoll.api.domain.endereco.DadosEndereco;
 import medvoll.api.domain.paciente.DadosCadastroPacientes;
 import medvoll.api.domain.paciente.Paciente;
+import medvoll.api.domain.usuario.DadosCadastroUsuarios;
+import medvoll.api.domain.usuario.Usuario;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,18 +39,18 @@ class MedicoRepositoryTest {
         var proximaSegundaAs10 = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY)).atTime(10, 0);
 
         var medico = cadastrarMedico("Medico", "medico@vell.med", "123456", Especialidade.CARDIOLOGIA);
-        var paciente = cadastrarPaciente("João", "joao@gmail.com", "25341859287");
-        cadastrarConsulta(medico, paciente, proximaSegundaAs10);
+        var usuario = cadastrarUsuario("João Lucas", "joao@gmail.com", "123456");
+        cadastrarConsulta(medico, usuario, proximaSegundaAs10);
 
         var medicoLivre = medicoRepository.medicoAleatoriodb(Especialidade.CARDIOLOGIA, proximaSegundaAs10);
         assertThat(medicoLivre).isNull();
     }
 
-    private void cadastrarConsulta(Medico medico, Paciente paciente, LocalDateTime data) {
+    private void cadastrarConsulta(Medico medico, Usuario usuario, LocalDateTime data) {
         ConsultaEntity consulta = new ConsultaEntity();
 
         consulta.setMedico(medico);
-        consulta.setPaciente(paciente);
+        consulta.setUsuario(usuario);
         consulta.setData(data);
         consulta.setMotivoCancelamento(MotivoCancelamento.PACIENTE_DESISTIU);
 
@@ -66,6 +68,11 @@ class MedicoRepositoryTest {
         var paciente = new Paciente(dadosPaciente(nome, email, cpf));
         em.persist(paciente);
         return paciente;
+    }
+    private Usuario cadastrarUsuario(String nome, String email, String senha) {
+        var usuario = new Usuario(nome, email, senha);
+        em.persist(usuario);
+        return usuario;
     }
 
     private DadosCadastroMedicos dadosMedico(String nome, String email, String crm, Especialidade especialidade) {
@@ -86,6 +93,14 @@ class MedicoRepositoryTest {
                 "61999999999",
                 cpf,
                 dadosEndereco()
+        );
+    }
+
+    private DadosCadastroUsuarios dadosUsuarios(String nome, String login, String senha) {
+        return new DadosCadastroUsuarios(
+                nome,
+                login,
+                senha
         );
     }
 
