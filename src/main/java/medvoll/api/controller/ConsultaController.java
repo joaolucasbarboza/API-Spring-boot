@@ -2,26 +2,21 @@ package medvoll.api.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import medvoll.api.domain.consulta.AgendarConsultas;
-import medvoll.api.domain.consulta.ConsultaRepository;
-import medvoll.api.domain.consulta.DadosAgendamento;
-import medvoll.api.domain.consulta.DadosCancelamentoConsulta;
-import medvoll.api.domain.consulta.DadosListagemConsulta;
+import medvoll.api.domain.consulta.*;
+import medvoll.api.domain.remedio.RemedioEntity;
+import medvoll.api.domain.remedio.RemedioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("consultas")
+@RequestMapping("/consultas")
 @SecurityRequirement(name = "bearer-key")
 public class ConsultaController {
 
@@ -31,17 +26,37 @@ public class ConsultaController {
     @Autowired
     private ConsultaRepository consultaRepository;
 
+    @Autowired
+    private RemedioRepository remedioRepository;
+
     @PostMapping
     @Transactional
     public ResponseEntity agendar(@RequestBody @Valid DadosAgendamento dados) {
         var dto = agenda.agendar(dados);
-        System.out.println(dados);
+
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping
     public ResponseEntity<Page<DadosListagemConsulta>> listar(@PageableDefault() Pageable pageable) {
+
         return ResponseEntity.ok(consultaRepository.findAll(pageable).map(DadosListagemConsulta::new));
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizarConsulta dados, @PathVariable Long id) {
+
+
+        var consulta = consultaRepository.getById(id);
+
+        List<RemedioEntity> novosRemedios = remedioRepository.findAllById(dados.idRemedios());
+
+        consulta.atualizar(dados, novosRemedios);
+
+        consultaRepository.save(consulta);
+
+        return ResponseEntity.ok(new DadosDetalhamentoConsulta(consulta));
     }
 
     @DeleteMapping

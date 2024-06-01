@@ -3,7 +3,7 @@ package medvoll.api.domain.consulta;
 import medvoll.api.domain.consulta.validacoes.ValidadorAgendamentoConsulta;
 import medvoll.api.domain.medico.Medico;
 import medvoll.api.domain.medico.MedicoRepository;
-import medvoll.api.domain.paciente.PacienteRepository;
+import medvoll.api.domain.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +19,13 @@ public class AgendarConsultas {
     private MedicoRepository medicoRepository;
 
     @Autowired
-    private PacienteRepository pacienteRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private List<ValidadorAgendamentoConsulta> validadores;
 
     public DadosDetalhamentoConsulta agendar(DadosAgendamento dados) {
-        if (!pacienteRepository.existsById(dados.idPaciente())) {
+        if (!usuarioRepository.existsById(dados.idUsuario())) {
             throw new RuntimeException("Paciente não encontrado!");
         }
 
@@ -37,18 +37,18 @@ public class AgendarConsultas {
 
         validadores.forEach(v -> v.validar(dados));
 
-        var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
+        var usuario = usuarioRepository.getReferenceById(dados.idUsuario());
 
-        System.out.println(paciente);
+        System.out.println(usuario);
 
         var medico = medicoAleatorio(dados);
         System.out.println(medico);
 
         ConsultaEntity consulta = new ConsultaEntity();
         consulta.setMedico(medico);
-        consulta.setPaciente(paciente);
+        consulta.setUsuario(usuario);
         consulta.setData(dados.data());
-        consulta.setMotivoCancelamento(MotivoCancelamento.PACIENTE_DESISTIU);
+        consulta.setFormaPagamento(dados.formaPagamento());
 
         System.out.println(consulta);
 

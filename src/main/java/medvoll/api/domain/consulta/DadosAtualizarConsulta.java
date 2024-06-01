@@ -1,11 +1,10 @@
 package medvoll.api.domain.consulta;
 
-import jakarta.validation.constraints.NotNull;
-import org.springframework.context.annotation.Role;
+import java.util.List;
 
 public record DadosAtualizarConsulta(
-              @NotNull
-              Long id,
-              FormaPagamento formaPagamento
+        Float valor,
+        FormaPagamento formaPagamento,
+        List<Long> idRemedios
 ) {
 }

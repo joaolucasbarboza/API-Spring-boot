@@ -11,11 +11,13 @@ public record DadosAgendamento(
         Long idMedico,
 
         @NotNull
-        Long idPaciente,
+        Long idUsuario,
 
         @Future
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime data,
+
+        FormaPagamento formaPagamento,
 
         Especialidade especialidade
         ) {
