@@ -54,4 +54,43 @@ public class RemedioEntity {
         this.dosagem = dados.dosagem();
         this.tipoRemedio = dados.tipoRemedio();
     }
+
+    public void atualizar(DadosAtualizarRemedios dados) {
+
+        if (dados.descricao() != null) {
+            this.descricao = dados.descricao();
+        }
+
+        if (dados.resumoMedicamento() != null) {
+            this.resumoMedicamento = dados.resumoMedicamento();
+        }
+
+        if (dados.dosagem() != null) {
+            this.dosagem = dados.dosagem();
+        }
+
+        if (dados.tipoRemedio() != null) {
+            this.tipoRemedio = dados.tipoRemedio();
+        }
+
+        if (dados.estoque() != null) {
+            this.estoque = dados.estoque();
+        }
+    }
+
+    public boolean estoqueVazio() {
+        return this.estoque == 0;
+    }
+
+    public boolean temEstoque() {
+        return this.estoque >= 1;
+    }
+
+    public void reduzirEstoque() {
+        if (temEstoque()) {
+            this.estoque -= 1;
+        } else {
+            throw new EstoqueInsuficienteExeception("Estoque insuficiente para o medicamento " + this.descricao);
+        }
+    }
 }

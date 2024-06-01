@@ -9,13 +9,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/remedios")
 @SecurityRequirement(name = "bearer-key")
 public class RemedioController {
+
+    private RemedioEntity remedioEntity;
 
     @Autowired
     private RemedioRepository repository;
@@ -45,4 +53,32 @@ public class RemedioController {
 
         return ResponseEntity.ok(new DadosDetalhamentoRemedio(remedio));
     }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizarRemedios dados, @PathVariable Long id) {
+        var remedio = repository.getById(id);
+
+        remedio.atualizar(dados);
+
+        if (dados.estoque() < 0) {
+            throw new RuntimeException("Não é possivel cadastrar estoque negativo");
+        }
+
+        repository.save(remedio);
+
+        return ResponseEntity.ok(new DadosDetalhamentoRemedio(remedio));
+    }
+
+    @PutMapping("/{id}/diminuirestoque")
+    @Transactional
+    public ResponseEntity diminuirEstoque(@PathVariable Long id) {
+        var remedio = repository.getById(id);
+
+        remedio.reduzirEstoque();
+
+        repository.save(remedio);
+        return ResponseEntity.ok(new DadosDetalhamentoRemedio(remedio));
+    }
+
 }
