@@ -2,7 +2,7 @@ package medvoll.api.domain.consulta;
 
 public enum FormaPagamento {
     PIX,
-    CARTÃO_CRÉDITO,
-    CARTÃO_BEBITO,
+    CARTAO_CREDITO,
+    CARTAO_DEBITO,
     DINHEIRO
 }
