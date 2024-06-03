@@ -27,6 +27,7 @@ public class Usuario implements UserDetails {
     private Long id;
     private String nome;
     private String login;
+    private String cpf;
     private String senha;
     private Boolean status;
 
@@ -67,8 +68,10 @@ public class Usuario implements UserDetails {
     }
 
     public Usuario(String nome, String login, String senha) {
+    public Usuario(String nome, String login, String cpf, String senha) {
         this.nome = nome;
         this.login = login;
+        this.cpf = cpf;
         this.senha = senha;
         this.status = true;
     }

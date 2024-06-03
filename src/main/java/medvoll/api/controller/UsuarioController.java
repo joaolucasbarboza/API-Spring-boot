@@ -1,24 +1,20 @@
 package medvoll.api.controller;
 
 import jakarta.validation.Valid;
-import jakarta.xml.bind.ValidationException;
-import medvoll.api.domain.usuario.DadosCadastroUsuarios;
-import medvoll.api.domain.usuario.DadosDetalhamentoUsuario;
-import medvoll.api.domain.usuario.Usuario;
-import medvoll.api.domain.usuario.UsuarioRepository;
+import medvoll.api.domain.usuario.*;
 import medvoll.api.infra.exception.EmailJaCadastradoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
@@ -36,14 +32,22 @@ public class UsuarioController {
 
         var senhaBCrypt = passwordEncoder.encode(dados.senha());
 
-        var usuario = new Usuario(dados.nome(), dados.login(), senhaBCrypt);
+        var usuario = new Usuario(dados.nome(), dados.login(), dados.cpf(), senhaBCrypt);
 
         repository.save(usuario);
 
-        var usuarioDetalhamento = new DadosDetalhamentoUsuario(usuario.getNome(), usuario.getLogin(), usuario.getSenha());
+        var usuarioDetalhamento = new DadosDetalhamentoUsuario(usuario.getNome(), usuario.getLogin(), usuario.getCpf(), usuario.getSenha());
 
         var uri = uriBuilder.path("/usuario/{id}").buildAndExpand(usuario.getLogin()).toUri();
 
         return ResponseEntity.created(uri).body(usuarioDetalhamento);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<DadosListagemUsuarios>> listar(@PageableDefault Pageable pageable) {
+
+        var usuarios = repository.findAll(pageable).map(DadosListagemUsuarios::new);
+
+        return ResponseEntity.ok(usuarios);
     }
 }
