@@ -49,7 +49,7 @@ public class TokenService {
                     .getSubject();
 
         } catch (JWTVerificationException exception){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token JWT inválido ou não fornecido", exception);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token JWT inválido ou não fornecido");
         }
     }
 

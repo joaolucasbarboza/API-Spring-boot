@@ -28,10 +28,18 @@ public class SecurityConfigurations {
                 http.csrf(csrf -> csrf.disable())
                         .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .authorizeHttpRequests(req -> {
-                            req.requestMatchers(HttpMethod.POST,"/login").permitAll();
                             req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
+
+                            req.requestMatchers(HttpMethod.POST,"/login").permitAll();
+                            req.requestMatchers(HttpMethod.POST, "/usuarios").permitAll();
+
+                            req.requestMatchers(HttpMethod.POST,"/medicos").hasRole("ADMIN");
+                            req.requestMatchers(HttpMethod.PUT, "/medicos").hasRole("ADMIN");
                             req.requestMatchers(HttpMethod.DELETE, "/medicos").hasRole("ADMIN");
-                            req.requestMatchers(HttpMethod.DELETE, "/pacientes").hasRole("ADMIN");
+
+                            req.requestMatchers(HttpMethod.POST, "/consultas", "/remedios").hasRole("USER");
+                            req.requestMatchers(HttpMethod.PUT, "/consultas", "/remedios").hasRole("USER");
+                            req.requestMatchers(HttpMethod.DELETE, "/consultas", "/remedios").hasRole("USER");
                             req.anyRequest().authenticated();
                         })
                         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

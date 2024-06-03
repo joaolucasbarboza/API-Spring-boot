@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,11 +31,19 @@ public class Usuario implements UserDetails {
     private String cpf;
     private String senha;
     private Boolean status;
-
+    private Boolean isAdmin;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        if (Boolean.TRUE.equals(this.isAdmin)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+
+        return authorities;
     }
 
     @Override
@@ -67,12 +76,12 @@ public class Usuario implements UserDetails {
         return true;
     }
 
-    public Usuario(String nome, String login, String senha) {
     public Usuario(String nome, String login, String cpf, String senha) {
         this.nome = nome;
         this.login = login;
         this.cpf = cpf;
         this.senha = senha;
         this.status = true;
+        this.isAdmin = false;
     }
 }
